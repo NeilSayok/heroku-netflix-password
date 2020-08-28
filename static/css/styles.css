@@ -1,0 +1,80 @@
+body {
+  background: #000;
+}
+
+p {
+  color: #FFF;
+  font-size: x-large;
+}
+
+/* #copy_password {
+  font-size: medium;
+} */
+
+.btn:not(:disabled):not(.disabled) {
+  width: 300px;
+  font-size: x-large;
+}
+
+@media only screen and (max-width: 600px) {
+  p {
+    color: #FFF;
+    font-size: large;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .btn:not(:disabled):not(.disabled) {
+    width: 200px;
+    font-size: large;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #copy_password {
+    font-size: medium;
+  }
+}
+
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  color: white;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+  color: white;
+}
+
