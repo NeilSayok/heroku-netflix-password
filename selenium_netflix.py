@@ -108,7 +108,7 @@ def getNewPasswordFromDB(id=1):
 def getCuttentPassword():
     current_pass = getCurrentPasswordFromDB()[1]
     with open("static/home.html", "r") as index:
-        html = index.read();
+        html = index.read()
         html = html.replace("%%##PASS##%%", current_pass)
         html = html.replace("assets/", "static/")
     return html
@@ -132,6 +132,16 @@ def sel():
             '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[1]/div[1]/div/label/input')
     except SeleniumException.NoSuchElementException:
         id_box = driver.find_element_by_id('id_userLoginId')
+    finally:
+        for element in driver.find_elements_by_tag_name('input'):
+            try:
+                print(element.get_attribute('class'))
+                print(element.get_attribute('xpath'))
+                print(element.get_attribute('id'))
+                print(element.get_attribute('autocomplete'))
+                print(element.get_attribute('name'))
+            except:
+                pass
 
     # id_password
     try:
