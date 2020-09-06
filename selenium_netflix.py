@@ -134,7 +134,7 @@ def sel():
         id_box = driver.find_element_by_id("id_userLoginId")
 
 
-    # id_password
+    # ipassword
     try:
         pass_box = driver.find_element_by_xpath(
             '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[2]/div/div/label/input')
