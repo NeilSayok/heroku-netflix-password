@@ -137,7 +137,7 @@ def sel():
     # id_password
     try:
         pass_box = driver.find_element_by_xpath(
-            '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[2]/div[1]/div/label/input')
+            '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[2]/div/div/label/input')
     except SeleniumException.NoSuchElementException:
         pass_box = driver.find_element_by_xpath('//*[@id="id_password_toggle"]')
 
