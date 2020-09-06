@@ -129,20 +129,11 @@ def sel():
     # id_userLoginId
     try:
         id_box = driver.find_element_by_xpath(
-            '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[1]/div[1]/div/label/input')
+            '//*[@id="id_userLoginId"]')
+
     except SeleniumException.NoSuchElementException:
-        try:
-            id_box = driver.find_element_by_id('id_userLoginId')
-        except:
-            for element in driver.find_elements_by_tag_name('input'):
-                try:
-                    print(element.get_attribute('class'))
-                    print(element.get_attribute('xpath'))
-                    print(element.get_attribute('id'))
-                    print(element.get_attribute('autocomplete'))
-                    print(element.get_attribute('name'))
-                except:
-                    pass
+        id_box = driver.find_element_by_id('id_userLoginId')
+
 
     # id_password
     try:
