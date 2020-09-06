@@ -129,10 +129,9 @@ def sel():
     # id_userLoginId
     try:
         id_box = driver.find_element_by_xpath(
-            '//*[@id="id_userLoginId"]')
-
+            '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[1]/div/div/label/input')
     except SeleniumException.NoSuchElementException:
-        id_box = driver.find_element_by_id('id_userLoginId')
+        id_box = driver.find_element_by_xpath('//*[@id="id_userLoginId"]')
 
 
     # id_password
@@ -140,7 +139,7 @@ def sel():
         pass_box = driver.find_element_by_xpath(
             '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[2]/div[1]/div/label/input')
     except SeleniumException.NoSuchElementException:
-        pass_box = driver.find_element_by_id('id_password')
+        pass_box = driver.find_element_by_xpath('//*[@id="id_password_toggle"]')
 
     # print(driver.page_source)
 
