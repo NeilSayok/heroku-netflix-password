@@ -9,6 +9,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import psycopg2
 from webdriver_manager.chrome import ChromeDriverManager
+import selenium.common.exceptions as SeleniumException
 
 port = 587
 smtp_server = "smtp-relay.sendinblue.com"
@@ -51,8 +52,8 @@ def getDriver():
     if sys.platform == 'win32':
         options = webdriver.ChromeOptions()
         options.add_argument('window-size=1200x600')
-        options.add_argument("--headless")
-        return webdriver.Chrome("F:\\Python\\Projects\\Selenium\\Netflix scam\\chromedriver.exe", options=options)
+        # options.add_argument("--headless")
+        return webdriver.Chrome(ChromeDriverManager().install(), options=options)
     else:
         chrome_options = webdriver.ChromeOptions()
         chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
@@ -125,15 +126,32 @@ def sel():
 
     driver.get("https://www.netflix.com/login")
     wait = WebDriverWait(driver, 600)
+    # id_userLoginId
+    try:
+        id_box = driver.find_element_by_xpath(
+            '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[1]/div[1]/div/label/input')
+    except SeleniumException.NoSuchElementException:
+        id_box = driver.find_element_by_id('id_userLoginId')
 
-    id_box = driver.find_element_by_xpath('/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[1]/div[1]/div/label/input')
-    pass_box = driver.find_element_by_xpath('/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[2]/div[1]/div/label/input')
+    # id_password
+    try:
+        pass_box = driver.find_element_by_xpath(
+            '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[2]/div[1]/div/label/input')
+    except SeleniumException.NoSuchElementException:
+        pass_box = driver.find_element_by_id('id_password')
+
     # print(driver.page_source)
 
     id_box.send_keys("cloud.iot98@gmail.com")
     pass_box.send_keys(current_pass)
 
-    driver.find_element_by_xpath("/html/body/div[1]/div/div[3]/div/div/div[1]/form/button").click()
+    # login-button
+    try:
+        login_btn = driver.find_element_by_xpath("/html/body/div[1]/div/div[3]/div/div/div[1]/form/button")
+    except SeleniumException.NoSuchElementException:
+        login_btn = driver.find_element_by_class_name("login-button")
+
+    login_btn.click()
     WebDriverWait(driver, 1200)
 
     # driver.execute_script("window.open('');")
@@ -148,28 +166,30 @@ def sel():
         except Exception as e:
             print(e)
             pass
-    wait = WebDriverWait(driver, 600)
+    WebDriverWait(driver, 600)
     WebDriverWait(driver, 600)
     # print(driver.page_source)
     # return (driver.page_source)
 
     driver.find_element_by_xpath("/html/body/div[1]/div/div/div[2]/div/form/ul/li[4]/div/label").click()
 
-    old_pass_inp = driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div/form/ul/li[1]/div/div/label/input')
-    new_pass_inp = driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div/form/ul/li[2]/div/div/label/input')
-    renew_pass_inp = driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div/form/ul/li[3]/div/div/label/input')
+    old_pass_inp = driver.find_element_by_xpath(
+        '/html/body/div[1]/div/div/div[2]/div/form/ul/li[1]/div/div/label/input')
+    new_pass_inp = driver.find_element_by_xpath(
+        '/html/body/div[1]/div/div/div[2]/div/form/ul/li[2]/div/div/label/input')
+    renew_pass_inp = driver.find_element_by_xpath(
+        '/html/body/div[1]/div/div/div[2]/div/form/ul/li[3]/div/div/label/input')
 
     old_pass_inp.send_keys(current_pass)
     new_pass_inp.send_keys(new_pass)
     renew_pass_inp.send_keys(new_pass)
 
-    for _ in range(0,5):
+    for _ in range(0, 5):
         try:
             driver.find_element_by_xpath("/html/body/div[1]/div/div/div[4]/div[1]/button[1]").click()
             break
         except Exception as e:
             print(e)
-
 
     driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div/form/div/button[1]').click()
 
@@ -186,5 +206,3 @@ def sel():
         pass
 
     return redirect(url_for('index'))
-
-
