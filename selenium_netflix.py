@@ -114,6 +114,21 @@ def getCuttentPassword():
     return html
 
 
+def getLoginPage():
+    driver = getDriver()
+
+    driver.get("https://www.netflix.com/login")
+    wait = WebDriverWait(driver, 600)
+    elem = driver.find_elements_by_xpath("//*[@id]")
+    out = ""
+    for e in elem:
+        out = out + f"<p>{e.tag_name}:{e.get_attribute('id')}</p><br>"
+    print(out)
+    print("IN FINALLY")
+
+    return out
+
+
 def sel():
     passTup = getCurrentPasswordFromDB()
 
