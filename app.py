@@ -14,7 +14,7 @@ def get_change_password():
     return sn.sel()
 
 @app.route('/getLoginpage')
-def get_change_password():
+def get_login_page():
     return sn.getLoginPage()
 
 @app.route('/update_password', methods=['GET'])
