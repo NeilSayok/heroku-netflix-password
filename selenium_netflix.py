@@ -142,6 +142,8 @@ def sel():
             out = ""
             for e in elem:
                 out = out + f"<p>{e.tag_name}:{e.get_attribute('id')}</p><br>"
+            print(out)
+            print("IN FINALLY")
             if err:
                 return out
 
