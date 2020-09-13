@@ -127,6 +127,7 @@ def sel():
     driver.get("https://www.netflix.com/login")
     wait = WebDriverWait(driver, 600)
     # id_userLoginId
+    err = False
     try:
         id_box = driver.find_element_by_xpath(
             '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[1]/div/div/label/input')
@@ -135,6 +136,14 @@ def sel():
             id_box = driver.find_element_by_id("id_userLoginId")
         except:
             id_box = driver.find_element_by_id("userLoginId")
+            err = True
+        finally:
+            elem = driver.find_elements_by_xpath("//*[@id]")
+            out = ""
+            for e in elem:
+                out = out + f"<p>{e.tag_name}:{e.get_attribute('id')}</p><br>"
+            if err:
+                return out
 
 
 
