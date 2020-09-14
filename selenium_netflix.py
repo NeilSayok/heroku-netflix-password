@@ -10,6 +10,7 @@ from email.mime.text import MIMEText
 import psycopg2
 from webdriver_manager.chrome import ChromeDriverManager
 import selenium.common.exceptions as SeleniumException
+from datetime import datetime
 
 port = 587
 smtp_server = "smtp-relay.sendinblue.com"
@@ -131,7 +132,12 @@ def sel():
     driver.get("https://www.netflix.com/login")
     wait = WebDriverWait(driver, 600)
     # id_userLoginId
+
+
     with open("file.txt","w") as fh:
+        now = datetime.now().strftime("%B %d, %Y %H:%M:%S")
+
+        fh.write(f"<p style='display:block;color:red;'>{now}</p>\n")
         fh.write(driver.page_source)
     err = False
     try:
