@@ -13,9 +13,16 @@ def index():
 def get_change_password():
     return sn.sel()
 
-@app.route('/getLoginpage')
-def get_login_page():
-    return sn.getLoginPage()
+
+@app.route('/getfile')
+def get_file():
+    with open("file.txt", "r") as fh:
+        lines = fh.readlines()
+        out = ""
+        for l in lines:
+            out += l + "\n"
+        return out
+
 
 @app.route('/update_password', methods=['GET'])
 def update_password():
@@ -26,7 +33,7 @@ def update_password():
         return redirect(url_for('index'))
     else:
         try:
-            sn.updateCurrentPasswordFromDB(set_num,set_pass,old_num)
+            sn.updateCurrentPasswordFromDB(set_num, set_pass, old_num)
             return f"Done {set_pass} @line {set_num}"
         except:
             return "Error"
@@ -38,6 +45,7 @@ def get_curr_pass_num():
     current_pass = passTup[1]
     num = passTup[0]
     return f"{current_pass}<br>{num}"
+
 
 @app.route('/links')
 def get_links():
@@ -96,8 +104,6 @@ def get_links():
     
     
     '''
-
-
 
 
 if __name__ == '__main__':
