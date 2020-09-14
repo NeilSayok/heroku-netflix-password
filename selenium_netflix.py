@@ -126,7 +126,8 @@ def sel():
     new_pass = getNewPasswordFromDB(num).strip()
 
     driver = getDriver()
-
+    driver.delete_all_cookies()
+    driver.get("https://www.netflix.com/clearcookies")
     driver.get("https://www.netflix.com/login")
     wait = WebDriverWait(driver, 600)
     # id_userLoginId
