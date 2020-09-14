@@ -1,3 +1,5 @@
+from threading import Thread
+
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 import os
@@ -115,9 +117,6 @@ def getCuttentPassword():
     return html
 
 
-
-
-
 def sel():
     passTup = getCurrentPasswordFromDB()
 
@@ -133,13 +132,10 @@ def sel():
     wait = WebDriverWait(driver, 600)
     # id_userLoginId
 
-
-    with open("file.txt","w") as fh:
+    with open("file.txt", "w", encoding="utf-8") as fh:
         now = datetime.now().strftime("%B %d, %Y %H:%M:%S")
-
         fh.write(f"<p style='display:block;color:red;'>{now}</p>\n")
         fh.write(driver.page_source)
-    err = False
     try:
         id_box = driver.find_element_by_xpath(
             '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[1]/div/div/label/input')
@@ -148,30 +144,15 @@ def sel():
             id_box = driver.find_element_by_id("id_userLoginId")
         except:
             id_box = driver.find_element_by_id("userLoginId")
-            err = True
-        finally:
-            elem = driver.find_elements_by_xpath("//*[@id]")
-            out = ""
-            for e in elem:
-                out = out + f"<p>{e.tag_name}:{e.get_attribute('id')}</p><br>"
-            print(out)
-            print("IN FINALLY")
-            if err:
-                return out
 
-
-
-    # ipassword
     try:
         pass_box = driver.find_element_by_xpath(
             '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[2]/div/div/label/input')
     except SeleniumException.NoSuchElementException:
         try:
-            pass_box = driver.find_element_by_id("id_password_toggle")
+            pass_box = driver.find_element_by_id("id_password")
         except:
             pass_box = driver.find_element_by_id("password_toggle")
-
-    # print(driver.page_source)
 
     id_box.send_keys("cloud.iot98@gmail.com")
     pass_box.send_keys(current_pass)
@@ -183,7 +164,12 @@ def sel():
         login_btn = driver.find_element_by_class_name("login-button")
 
     login_btn.click()
-    WebDriverWait(driver, 1200)
+
+    print(f"Password: {current_pass} ")
+
+    wait = WebDriverWait(driver,1200)
+    wait.until(lambda d: d.find_element_by_xpath("/html/body/div[1]/div/div/div[1]/div[1]/div[2]/div/div/ul/li[4]/a/div"))
+
 
     # driver.execute_script("window.open('');")
     # driver.switch_to.window(driver.window_handles[1])
