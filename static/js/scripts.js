@@ -15,8 +15,8 @@ document.getElementById("change_password_btn").onclick = function () {
         '    <p style="color: black">Changing Password...</p>' +
         '</div>');
     console.log("change_password_Called");
-    //location.href = "/change_password";
-    location.href = "https://colab.research.google.com/drive/1GHrevM4gXymdzQq6zJP64kET-kEKiJ44?usp=sharing"
+    location.href = "/change_password";
+    //location.href = "https://colab.research.google.com/drive/1GHrevM4gXymdzQq6zJP64kET-kEKiJ44?usp=sharing"
 
     };
 
