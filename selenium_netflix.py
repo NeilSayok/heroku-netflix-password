@@ -55,6 +55,8 @@ def getDriver():
     if sys.platform == 'win32':
         options = webdriver.ChromeOptions()
         options.add_argument('window-size=1200x600')
+        options.add_argument('--disable-notifications')
+
         # options.add_argument("--headless")
         return webdriver.Chrome(ChromeDriverManager().install(), options=options)
     else:
@@ -65,6 +67,8 @@ def getDriver():
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-notifications")
+
         return webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
 
 
@@ -168,7 +172,7 @@ def sel():
     print(f"Password: {current_pass} ")
 
     wait = WebDriverWait(driver,1200)
-    wait.until(lambda d: d.find_element_by_xpath("/html/body/div[1]/div/div/div[1]/div[1]/div[2]/div/div/ul/li[4]/a/div"))
+    wait.until(lambda d: d.find_element_by_xpath('//*[@id="appMountPoint"]/div/div/div[1]/div[1]/div[2]/div/span/a'))
 
 
     # driver.execute_script("window.open('');")
