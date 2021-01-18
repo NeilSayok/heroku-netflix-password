@@ -48,12 +48,28 @@
     id="change_password_btn" type="button" style="margin-top: 24px;">Change Password
 </button>
 
+<button class="btn btn-primary"
+    id="go_to_colab_btn" type="button" style="margin-top: 24px;" onclick="goToColab()">Go To Colab NoteBook
+</button>
+
 
 
 
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/js/scripts.js"></script>
+
+<script>
+    function goToColab(){
+    console.log("Colab");
+    var r = confirm("You  will be redirected to a Colab NoteBook.\nPlease Do not Change Any CODE");
+    if (r === true){
+        window.location.href = "https://colab.research.google.com/drive/1GHrevM4gXymdzQq6zJP64kET-kEKiJ44";
+    }
+
+}
+</script>
+
 </body>
 
 </html>

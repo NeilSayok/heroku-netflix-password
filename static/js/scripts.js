@@ -7,6 +7,14 @@ function copyPassword(){
 
 }
 
+function goToColab(){
+   console.log("Colab");
+    var r = confirm("You  will be redirected to a Colab NoteBook.\nPlease Do not Change Any CODE");
+    if (r === true){
+        window.location.href = "https://colab.research.google.com/drive/1GHrevM4gXymdzQq6zJP64kET-kEKiJ44";
+    }
+}
+
 
 document.getElementById("change_password_btn").onclick = function () {
     $("body").append('<div style="width: 100%;height: 100%;position: absolute;background: rgba(255,255,255,0.9);display: flex;'+
