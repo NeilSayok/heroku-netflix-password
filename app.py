@@ -49,61 +49,14 @@ def get_curr_pass_num():
 
 @app.route('/links')
 def get_links():
-    return '''
-    <!DOCTYPE html>
-<html>
-<head>
-    <style>
-        table {
-          font-family: arial, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
-        }
-        td, th {
-          border: 1px solid #dddddd;
-          text-align: left;
-          padding: 8px;
-        }
-
-        tr:nth-child(even) {
-          background-color: #dddddd;
-        }
-    </style>
-</head>
-<body style="background:white;">
-<br><br><br><br>
-<table>
-    <tr>
-        <th>Use</th>
-        <th>Get Fields</th>
-        <th>Link</th>
-    </tr>
-    
-  <tr>
-    <td>Change the password if changed manually</td>
-    <td><b>pass</b>:The New Password<br>
-        <b>newId</b>:The Current Password number to be used<br>
-        <b>oldID</b>:The Old Password number to being used<br>
-    </td>
-    <td><a href="https://netflixpassword.herokuapp.com/update_password">Go to update_password</a></td>
-  </tr>
-
-<tr>
-    <td>Get the current Password and Index</td>
-    <td>N/A</td>
-    <td><a href="https://netflixpassword.herokuapp.com/get_curr_pass_txt">Go to get_curr_pass_txt</a></td>
-  </tr>
-      
-      
-    
-    
-
-</table>
-</body>
-</html>
-    
-    
-    '''
+    passTup = sn.getCurrentPasswordFromDB()
+    with open("static/alllinks.html","r") as fh:
+        html = fh.read()
+        html = html.replace("assets/", "static/")
+        html = html.replace("##oldpass##", f"{passTup[1]}")
+        html = html.replace("##oldid##", f"{passTup[0]}")  
+    return html
+ 
 
 
 if __name__ == '__main__':

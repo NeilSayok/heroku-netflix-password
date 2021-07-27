@@ -98,6 +98,10 @@ def updateCurrentPasswordFromDB(newID, newPass, oldID):
     conn.close()
 
 
+
+
+
+
 def getNewPasswordFromDB(id=1):
     conn = psycopg2.connect(database="dd2nqu4a7q86gk",
                             user="mbadltkqhsmdjk",

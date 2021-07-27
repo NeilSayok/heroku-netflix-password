@@ -52,6 +52,10 @@
     id="go_to_colab_btn" type="button" style="margin-top: 24px;" onclick="goToColab()">Go To Colab NoteBook
 </button>
 
+<button class="btn btn-primary"
+    id="go_to_all_links" type="button" style="margin-top: 24px;" onclick="goToAllLinks()">Go To All Links
+</button>
+
 
 
 
@@ -68,6 +72,11 @@
     }
 
 }
+    function goToAllLinks(){
+        window.location.pathname = ('/links');
+
+       
+    }
 </script>
 
 </body>

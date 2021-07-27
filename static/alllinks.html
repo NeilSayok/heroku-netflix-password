@@ -1,23 +1,84 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
 </head>
-<body>
-
-<h2>HTML Table</h2>
-
+<body style="background:white;">
+<br><br><br><br>
 <table>
     <tr>
         <th>Use</th>
         <th>Get Fields</th>
         <th>Link</th>
     </tr>
+    
+<tr>
+    <td>Change the password if changed manually</td>
+    <td><b>pass</b>:The New Password<br>
+        <b>newId</b>:The Current Password number to be used<br>
+        <b>oldID</b>:The Old Password number to being used<br>
+    </td>
+    <td>
+        <label for="n_pass">New Password:</label>
+        <input type="text" id="n_pass" name="n_pass" placeholder="Enter New Password"><br><br>
+        <label for="n_id">New Id:</label>
+        <input type="text" id="n_id" name="n_id" placeholder="Enter new Id(Old Id + 1)"><br><br>
+        <label for="o_id">Old ID:</label>
+        <input type="text" id="o_id" name="o_id" value="##oldid##"><br><br>
+        <p>Old password : ##oldpass##</p>
+        <button class="btn btn-primary" type="button" onclick="checkValid()">Go to update_password</button>
+    </td>
+</tr>
 
-    %%##data##%%
-
-
+<tr>
+    <td>Get the current Password and Index</td>
+    <td>N/A</td>
+    <td><a href="https://netflixpassword.herokuapp.com/get_curr_pass_txt" class="btn btn-primary">Go to get_curr_pass_txt</a></td>
+</tr>
+    
+    
+    
+    
 
 </table>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+<script>
+    function checkValid(){
+        if($("#n_pass").val().length < 7){
+            alert("Enter a valid password: \n\n - Password should be of length 6 or Greater")
+        }else{
+            var n_id = 1
+            if($('#n_id').val().length === 0 || $('#n_id').val() == null){
+                n_id = parseInt($('#o_id').val()) + 1
+            }else{
+                n_id = $('#n_id').val()
+            }
+            console.log($("#n_pass").val(),n_id,$('#o_id').val());
+            //window.location.pathname = '/update_password?pass='+encodeURIComponent($("#n_pass").val())+'&newId='+n_id+'&oldID='+$('#o_id').val();
+            window.location.href = window.location.origin +'/update_password?pass='+encodeURIComponent($("#n_pass").val())+'&newId='+n_id+'&oldID='+$('#o_id').val();
+        }
+    }
+</script>
 </body>
 </html>
