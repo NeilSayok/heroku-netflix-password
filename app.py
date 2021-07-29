@@ -16,7 +16,7 @@ def get_change_password():
 
 @app.route('/getfile')
 def get_file():
-    with open("file.txt", "r") as fh:
+    with open("file.html", "r") as fh:
         lines = fh.readlines()
         out = ""
         for l in lines:
@@ -56,7 +56,9 @@ def get_links():
         html = html.replace("##oldpass##", f"{passTup[1]}")
         html = html.replace("##oldid##", f"{passTup[0]}")  
     return html
- 
+
+
+
 
 
 if __name__ == '__main__':

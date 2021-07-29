@@ -1,5 +1,3 @@
-from threading import Thread
-
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 import os
