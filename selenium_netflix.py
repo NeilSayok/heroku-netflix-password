@@ -13,6 +13,9 @@ import psycopg2
 from webdriver_manager.chrome import ChromeDriverManager
 import selenium.common.exceptions as SeleniumException
 from datetime import datetime
+from selenium.webdriver.common.by import By
+from inspect import currentframe
+
 
 port = 587
 smtp_server = "smtp-relay.sendinblue.com"
@@ -20,6 +23,17 @@ login = "sdmsdm1998@gmail.com"
 password = "T0Hn89ZkyYUP5s3E"
 sender = "sdmsdm1998@gmail.com"
 receiver = "sayokdeymajumder1998@gmail.com"
+
+
+def write_to_file(driver):
+    with open("file.html", "w", encoding="utf-8") as fh:
+          now = datetime.now().strftime("%B %d, %Y %H:%M:%S")
+          fh.write(f"<p style='display:block;color:red;'>{now}</p>\n")
+          fh.write(driver.page_source)
+
+def get_linenumber():
+    cf = currentframe()
+    return cf.f_back.f_lineno
 
 
 def sendMail(nf_password):
@@ -97,11 +111,6 @@ def updateCurrentPasswordFromDB(newID, newPass, oldID):
     conn.commit()
     conn.close()
 
-
-
-
-
-
 def getNewPasswordFromDB(id=1):
     conn = psycopg2.connect(database="dd2nqu4a7q86gk",
                             user="mbadltkqhsmdjk",
@@ -125,6 +134,7 @@ def getCuttentPassword():
     return html
 
 
+
 def sel():
     passTup = getCurrentPasswordFromDB()
 
@@ -140,10 +150,9 @@ def sel():
     wait = WebDriverWait(driver, 600)
     # id_userLoginId
 
-    with open("file.txt", "w", encoding="utf-8") as fh:
-        now = datetime.now().strftime("%B %d, %Y %H:%M:%S")
-        fh.write(f"<p style='display:block;color:red;'>{now}</p>\n")
-        fh.write(driver.page_source)
+    write_to_file(driver)
+
+    print(f"Line:{get_linenumber()} Link:{driver.current_url}")
     try:
         id_box = driver.find_element_by_xpath(
             '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[1]/div/div/label/input')
@@ -152,7 +161,9 @@ def sel():
             id_box = driver.find_element_by_id("id_userLoginId")
         except:
             id_box = driver.find_element_by_id("userLoginId")
-
+            write_to_file(driver)
+    
+    print(f"Line:{get_linenumber()} Link:{driver.current_url}")
     try:
         pass_box = driver.find_element_by_xpath(
             '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[2]/div/div/label/input')
@@ -161,34 +172,45 @@ def sel():
             pass_box = driver.find_element_by_id("id_password")
         except:
             pass_box = driver.find_element_by_id("password_toggle")
+            write_to_file(driver)
 
     id_box.send_keys("cloud.iot98@gmail.com")
     pass_box.send_keys(current_pass)
 
     # login-button
+    print(f"Line:{get_linenumber()} Link:{driver.current_url}")
     try:
         login_btn = driver.find_element_by_xpath("/html/body/div[1]/div/div[3]/div/div/div[1]/form/button")
     except SeleniumException.NoSuchElementException:
         login_btn = driver.find_element_by_class_name("login-button")
+        write_to_file(driver)
 
     login_btn.click()
 
     print(f"Password: {current_pass} ")
+    print(f"Line:{get_linenumber()} Link:{driver.current_url}")
 
-    wait = WebDriverWait(driver,1200)
-    wait.until(lambda d: d.find_element_by_xpath('//*[@id="appMountPoint"]/div/div/div[1]/div[1]/div[2]/div/span/a'))
+    try:
+        wait = WebDriverWait(driver,1200)
+        wait.until(lambda d: d.find_element_by_xpath('//*[@id="appMountPoint"]/div/div/div[1]/div[1]/div[2]/div/span/a'))
+    except Exception as e:
+        write_to_file(driver)
+        print(e)
 
 
     # driver.execute_script("window.open('');")
     # driver.switch_to.window(driver.window_handles[1])
 
     # driver.get("https://www.netflix.com/password")
+    print(f"Line:{get_linenumber()} Link:{driver.current_url}")
+
     while True:
         try:
             driver.get('https://www.netflix.com/password')
             driver.find_element_by_xpath("/html/body/div[1]/div/div/div[2]/div/form/ul/li[4]/div/label")
             break
         except Exception as e:
+            write_to_file(driver)
             print(e)
             pass
     WebDriverWait(driver, 600)
@@ -209,12 +231,17 @@ def sel():
     new_pass_inp.send_keys(new_pass)
     renew_pass_inp.send_keys(new_pass)
 
+    print(f"Line:{get_linenumber()} Link:{driver.current_url}")
+
     for _ in range(0, 5):
         try:
             driver.find_element_by_xpath("/html/body/div[1]/div/div/div[4]/div[1]/button[1]").click()
             break
         except Exception as e:
             print(e)
+            write_to_file(driver)
+
+    print(f"Line:{get_linenumber()} Link:{driver.current_url}")
 
     driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div/form/div/button[1]').click()
 
