@@ -9,6 +9,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import psycopg2
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
 import selenium.common.exceptions as SeleniumException
 from datetime import datetime
 from selenium.webdriver.common.by import By
@@ -65,13 +66,15 @@ def sendMail(nf_password):
 
 def getDriver():
     if sys.platform == 'win32':
+        print("Windows")
         options = webdriver.ChromeOptions()
         options.add_argument('window-size=1200x600')
         options.add_argument('--disable-notifications')
 
         # options.add_argument("--headless")
-        return webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        return webdriver.Chrome(EdgeChromiumDriverManager().install(), options=options)
     else:
+        print("Linux")
         chrome_options = webdriver.ChromeOptions()
         chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
         chrome_options.add_argument("--example-flag")
@@ -184,6 +187,10 @@ def sel():
         write_to_file(driver)
 
     login_btn.click()
+
+    while True:     
+      if "browse" in  driver.current_url:
+        break
 
     print(f"Password: {current_pass} ")
     print(f"Line:{get_linenumber()} Link:{driver.current_url}")
