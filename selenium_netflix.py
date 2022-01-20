@@ -72,7 +72,7 @@ def getDriver():
         options.add_argument('--disable-notifications')
 
         # options.add_argument("--headless")
-        return webdriver.Chrome(EdgeChromiumDriverManager().install(), options=options)
+        return webdriver.Chrome(ChromeDriverManager().install(), options=options)
     else:
         print("Linux")
         chrome_options = webdriver.ChromeOptions()
