@@ -16,6 +16,14 @@ from selenium.webdriver.common.by import By
 from inspect import currentframe
 
 
+def update_packages():
+    print("Installing PIP")
+    os.system("python -m pip install --upgrade pip")
+    print("=" * 100)
+    os.system("pip install -r requirements.txt")
+    print("=" * 100)
+
+
 port = 587
 smtp_server = "smtp-relay.sendinblue.com"
 login = "sdmsdm1998@gmail.com"
@@ -23,12 +31,16 @@ password = "T0Hn89ZkyYUP5s3E"
 sender = "sdmsdm1998@gmail.com"
 receiver = "sayokdeymajumder1998@gmail.com"
 
+TESTING = True
 
 def write_to_file(driver):
-    with open("file.html", "w", encoding="utf-8") as fh:
-          now = datetime.now().strftime("%B %d, %Y %H:%M:%S")
-          fh.write(f"<p style='display:block;color:red;'>{now}</p>\n")
-          fh.write(driver.page_source)
+    if TESTING:
+        u = driver.current_url
+        with open(f"testing\{u[u.rindex('/')+1:]}.html", "w", encoding="utf-8") as fh:
+            now = datetime.now().strftime("%B %d, %Y %H:%M:%S")
+            fh.write(f"<p style='display:block;color:red;'>{now}</p>\n")
+            fh.write(driver.page_source)
+
 
 def get_linenumber():
     cf = currentframe()
@@ -67,9 +79,18 @@ def sendMail(nf_password):
 def getDriver():
     if sys.platform == 'win32':
         print("Windows")
+        # update_packages()
         options = webdriver.ChromeOptions()
         options.add_argument('window-size=1200x600')
         options.add_argument('--disable-notifications')
+
+        # Disable Flags
+        # chrome_options.add_argument("--example-flag")
+        # options.add_argument('--disable-gpu')
+        # options.add_argument("--headless")
+        # options.add_argument("--disable-dev-shm-usage")
+        # options.add_argument("--no-sandbox")
+        # options.add_argument("--disable-notifications")
 
         # options.add_argument("--headless")
         return webdriver.Chrome(ChromeDriverManager().install(), options=options)
@@ -86,13 +107,23 @@ def getDriver():
 
         return webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
 
+def getDBConn():
+    return psycopg2.connect(database="df1hvo4jsjm82v",
+                            user="fijzrwtlqlmxms",
+                            password="76e05d2f25cd871b0a32dbbfb08a5bc98e161e60b6d081a4e1e2828eab22bed9",
+                            host="ec2-52-45-75-209.compute-1.amazonaws.com",
+                            port="5432")
+
+# def getDBConn():
+#     return psycopg2.connect(database="dd2nqu4a7q86gk",
+#                             user="mbadltkqhsmdjk",
+#                             password="c8028c42ec3eab6b75d3555b439ce1dfcb3798031965ff0ca4ae249a2a30a36f",
+#                             host="ec2-50-19-26-235.compute-1.amazonaws.com",
+#                             port="5432")                            
+
 
 def getCurrentPasswordFromDB():
-    conn = psycopg2.connect(database="dd2nqu4a7q86gk",
-                            user="mbadltkqhsmdjk",
-                            password="c8028c42ec3eab6b75d3555b439ce1dfcb3798031965ff0ca4ae249a2a30a36f",
-                            host="ec2-50-19-26-235.compute-1.amazonaws.com",
-                            port="5432")
+    conn = getDBConn()
     cur = conn.cursor()
     cur.execute(f"SELECT * from currentpassword")
     record = cur.fetchall()
@@ -102,22 +133,15 @@ def getCurrentPasswordFromDB():
 
 
 def updateCurrentPasswordFromDB(newID, newPass, oldID):
-    conn = psycopg2.connect(database="dd2nqu4a7q86gk",
-                            user="mbadltkqhsmdjk",
-                            password="c8028c42ec3eab6b75d3555b439ce1dfcb3798031965ff0ca4ae249a2a30a36f",
-                            host="ec2-50-19-26-235.compute-1.amazonaws.com",
-                            port="5432")
+    conn = getDBConn()
     cur = conn.cursor()
     cur.execute(f"UPDATE currentpassword SET id = '{newID}',password='{newPass}' WHERE id = {oldID}")
     conn.commit()
     conn.close()
 
+
 def getNewPasswordFromDB(id=1):
-    conn = psycopg2.connect(database="dd2nqu4a7q86gk",
-                            user="mbadltkqhsmdjk",
-                            password="c8028c42ec3eab6b75d3555b439ce1dfcb3798031965ff0ca4ae249a2a30a36f",
-                            host="ec2-50-19-26-235.compute-1.amazonaws.com",
-                            port="5432")
+    conn = getDBConn()
     cur = conn.cursor()
     cur.execute(f"SELECT password from allpasswords where id = '{id}'")
     rec = cur.fetchall()
@@ -133,7 +157,6 @@ def getCuttentPassword():
         html = html.replace("%%##PASS##%%", current_pass)
         html = html.replace("assets/", "static/")
     return html
-
 
 
 def sel():
@@ -155,24 +178,24 @@ def sel():
 
     print(f"Line:{get_linenumber()} Link:{driver.current_url}")
     try:
-        id_box = driver.find_element_by_xpath(
-            '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[1]/div/div/label/input')
+        id_box = driver.find_element(By.XPATH,
+                                     '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[1]/div/div/label/input')
     except SeleniumException.NoSuchElementException:
         try:
-            id_box = driver.find_element_by_id("id_userLoginId")
+            id_box = driver.find_element(By.ID, "id_userLoginId")
         except:
-            id_box = driver.find_element_by_id("userLoginId")
+            id_box = driver.find_element(By.ID, "userLoginId")
             write_to_file(driver)
-    
+
     print(f"Line:{get_linenumber()} Link:{driver.current_url}")
     try:
-        pass_box = driver.find_element_by_xpath(
-            '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[2]/div/div/label/input')
+        pass_box = driver.find_element(By.XPATH,
+                                       '/html/body/div[1]/div/div[3]/div/div/div[1]/form/div[2]/div/div/label/input')
     except SeleniumException.NoSuchElementException:
         try:
-            pass_box = driver.find_element_by_id("id_password")
+            pass_box = driver.find_element(By.ID, "id_password")
         except:
-            pass_box = driver.find_element_by_id("password_toggle")
+            pass_box = driver.find_element(By.ID, "password_toggle")
             write_to_file(driver)
 
     id_box.send_keys("cloud.iot98@gmail.com")
@@ -181,27 +204,27 @@ def sel():
     # login-button
     print(f"Line:{get_linenumber()} Link:{driver.current_url}")
     try:
-        login_btn = driver.find_element_by_xpath("/html/body/div[1]/div/div[3]/div/div/div[1]/form/button")
+        login_btn = driver.find_element(By.XPATH, "/html/body/div[1]/div/div[3]/div/div/div[1]/form/button")
     except SeleniumException.NoSuchElementException:
-        login_btn = driver.find_element_by_class_name("login-button")
+        login_btn = driver.find_element(By.CLASS_NAME,"login-button")
         write_to_file(driver)
 
     login_btn.click()
 
-    while True:     
-      if "browse" in  driver.current_url:
-        break
+    while True:
+        if "browse" in driver.current_url:
+            break
 
     print(f"Password: {current_pass} ")
     print(f"Line:{get_linenumber()} Link:{driver.current_url}")
 
     try:
-        wait = WebDriverWait(driver,1200)
-        wait.until(lambda d: d.find_element_by_xpath('//*[@id="appMountPoint"]/div/div/div[1]/div[1]/div[2]/div/span/a'))
+        wait = WebDriverWait(driver, 1200)
+        wait.until(
+            lambda d: d.find_element(By.XPATH, '//*[@id="appMountPoint"]/div/div/div[1]/div[1]/div[2]/div/span/a'))
     except Exception as e:
         write_to_file(driver)
         print(e)
-
 
     # driver.execute_script("window.open('');")
     # driver.switch_to.window(driver.window_handles[1])
@@ -212,7 +235,8 @@ def sel():
     while True:
         try:
             driver.get('https://www.netflix.com/password')
-            driver.find_element_by_xpath("/html/body/div[1]/div/div/div[2]/div/form/ul/li[4]/div/label")
+            write_to_file(driver)
+            driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[2]/div/form/ul/li[4]/div/label")
             break
         except Exception as e:
             write_to_file(driver)
@@ -223,14 +247,14 @@ def sel():
     # print(driver.page_source)
     # return (driver.page_source)
 
-    driver.find_element_by_xpath("/html/body/div[1]/div/div/div[2]/div/form/ul/li[4]/div/label").click()
+    driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[2]/div/form/ul/li[4]/div/label").click()
 
-    old_pass_inp = driver.find_element_by_xpath(
-        '/html/body/div[1]/div/div/div[2]/div/form/ul/li[1]/div/div/label/input')
-    new_pass_inp = driver.find_element_by_xpath(
-        '/html/body/div[1]/div/div/div[2]/div/form/ul/li[2]/div/div/label/input')
-    renew_pass_inp = driver.find_element_by_xpath(
-        '/html/body/div[1]/div/div/div[2]/div/form/ul/li[3]/div/div/label/input')
+    old_pass_inp = driver.find_element(By.XPATH,
+                                       '/html/body/div[1]/div/div/div[2]/div/form/ul/li[1]/div/div/label/input')
+    new_pass_inp = driver.find_element(By.XPATH,
+                                       '/html/body/div[1]/div/div/div[2]/div/form/ul/li[2]/div/div/label/input')
+    renew_pass_inp = driver.find_element(By.XPATH,
+                                         '/html/body/div[1]/div/div/div[2]/div/form/ul/li[3]/div/div/label/input')
 
     old_pass_inp.send_keys(current_pass)
     new_pass_inp.send_keys(new_pass)
@@ -240,7 +264,7 @@ def sel():
 
     for _ in range(0, 5):
         try:
-            driver.find_element_by_xpath("/html/body/div[1]/div/div/div[4]/div[1]/button[1]").click()
+            driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[4]/div[1]/button[1]").click()
             break
         except Exception as e:
             print(e)
@@ -248,7 +272,7 @@ def sel():
 
     print(f"Line:{get_linenumber()} Link:{driver.current_url}")
 
-    driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div/form/div/button[1]').click()
+    driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div[2]/div/form/div/button[1]').click()
 
     if num >= 5000:
         newID = 1

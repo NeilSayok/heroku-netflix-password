@@ -1,8 +1,9 @@
 from flask import Flask, request, redirect, url_for
 import selenium_netflix as sn
+import webbrowser
+from threading import Timer
 
 app = Flask(__name__)
-
 
 @app.route('/')
 def index():
@@ -58,8 +59,12 @@ def get_links():
     return html
 
 
-
+def open_browser():
+    webbrowser.open_new('http://127.0.0.1:2000/')
 
 
 if __name__ == '__main__':
-    app.run()
+    #app.run()
+    Timer(1, open_browser).start()
+    app.run(port=2000)
+
